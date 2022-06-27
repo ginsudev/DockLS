@@ -1,0 +1,4 @@
+module docklsC {
+    umbrella "."
+    export *
+}
