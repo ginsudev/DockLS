@@ -57,7 +57,7 @@ struct SBIconImageInfo {
 @interface CSCombinedListViewController : UIViewController
 @end
 
-@interface CSCoverSheetViewController : UIViewController
+@interface CSMainPageContentViewController : UIViewController
 @end
 
 @interface CSTeachableMomentsContainerView : UIView
@@ -74,6 +74,13 @@ struct SBIconImageInfo {
 
 @interface MTMaterialView : UIView
 + (instancetype)materialViewWithRecipe:(long long)arg1 configuration:(long long)arg2;
+@end
+
+@interface SBFTouchPassThroughViewController : UIViewController
+@end
+
+@interface UIViewController (Private)
+- (BOOL)_canShowWhileLocked;
 @end
 
 @interface UIDevice (Private)

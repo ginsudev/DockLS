@@ -28,30 +28,29 @@ class SBDockIconListView_Hook: ClassHook<SBDockIconListView> {
     }
 }
 
-class CSCoverSheetViewController_Hook: ClassHook<CSCoverSheetViewController> {
+class CSMainPageContentViewController_Hook: ClassHook<CSMainPageContentViewController> {
     typealias Group = tweak
+    
+    @Property (.nonatomic, .retain) var dockController = DLSDockViewController(withIconList: DLSManager.sharedInstance.dockList)
 
     func viewDidLoad() {
         orig.viewDidLoad()
         
-        if DLSManager.sharedInstance.dockList.iconLocation == "SBIconLocationFloatingDock" {
-            DLSManager.sharedInstance.dockHeight = 116
-        } else {
-            if FileManager().fileExists(atPath: "/Library/MobileSubstrate/DynamicLibraries/DockSearch.dylib") {
-                DLSManager.sharedInstance.dockHeight = DLSManager.sharedInstance.dockList.frame.height - 60
-            } else {
-                DLSManager.sharedInstance.dockHeight = DLSManager.sharedInstance.dockList.frame.height
-            }
-        }
+        dockController = DLSDockViewController(withIconList: DLSManager.sharedInstance.dockList)
+        target.addChild(dockController)
+        dockController.view.translatesAutoresizingMaskIntoConstraints = false
+        target.view.addSubview(dockController.view)
+    }
+    
+    func viewWillAppear(_ animated: Bool) {
+        orig.viewWillAppear(animated)
         
-        DLSManager.sharedInstance.dock = DLSDockView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - (localSettings.inset * 2), height: DLSManager.sharedInstance.dockHeight), listView: DLSManager.sharedInstance.dockList)
-        DLSManager.sharedInstance.dock.translatesAutoresizingMaskIntoConstraints = false
-        target.view.addSubview(DLSManager.sharedInstance.dock)
+        target.view.bringSubviewToFront(dockController.view)
         //Constraints
-        DLSManager.sharedInstance.dock.heightAnchor.constraint(equalToConstant: DLSManager.sharedInstance.dockHeight).isActive = true
-        DLSManager.sharedInstance.dock.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - (localSettings.inset * 2)).isActive = true
-        DLSManager.sharedInstance.dock.centerXAnchor.constraint(equalTo: target.view.centerXAnchor).isActive = true
-        DLSManager.sharedInstance.dock.bottomAnchor.constraint(equalTo: target.view.bottomAnchor, constant: -localSettings.inset).isActive = true
+        dockController.view.heightAnchor.constraint(equalTo: target.view.heightAnchor).isActive = true
+        dockController.view.widthAnchor.constraint(equalTo: target.view.widthAnchor).isActive = true
+        dockController.view.centerXAnchor.constraint(equalTo: target.view.centerXAnchor).isActive = true
+        dockController.view.bottomAnchor.constraint(equalTo: target.view.bottomAnchor).isActive = true
     }
 }
 

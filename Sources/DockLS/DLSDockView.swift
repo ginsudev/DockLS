@@ -24,8 +24,8 @@ class DLSDockView: UIView {
             }
             addSubview(background)
             //Constraints
-            background.heightAnchor.constraint(equalToConstant: self.frame.height).isActive = true
-            background.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
+            background.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+            background.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
             background.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
             background.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         }
