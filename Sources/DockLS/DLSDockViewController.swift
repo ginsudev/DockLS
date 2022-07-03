@@ -31,7 +31,7 @@ class DLSDockViewController: SBFTouchPassThroughViewController {
         if iconList.iconLocation == "SBIconLocationFloatingDock" {
             DLSManager.sharedInstance.dockHeight = 116
         } else {
-            if FileManager().fileExists(atPath: "/Library/MobileSubstrate/DynamicLibraries/DockSearch.dylib") {
+            if GSUtilities.sharedInstance().isDockSearchInstalled() {
                 DLSManager.sharedInstance.dockHeight = DLSManager.sharedInstance.dockList.frame.height - 60
             } else {
                 DLSManager.sharedInstance.dockHeight = DLSManager.sharedInstance.dockList.frame.height
@@ -46,7 +46,9 @@ class DLSDockViewController: SBFTouchPassThroughViewController {
         DLSManager.sharedInstance.dock.heightAnchor.constraint(equalToConstant: DLSManager.sharedInstance.dockHeight).isActive = true
         DLSManager.sharedInstance.dock.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - (localSettings.inset * 2)).isActive = true
         DLSManager.sharedInstance.dock.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        DLSManager.sharedInstance.dock.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -localSettings.inset).isActive = true
+        
+        let AndroBarHeight = GSUtilities.sharedInstance().isAndroBarInstalled() ? GSUtilities.sharedInstance().androBarHeight : 0.0
+        DLSManager.sharedInstance.dock.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -localSettings.inset - AndroBarHeight).isActive = true
     }
     
     override func _canShowWhileLocked() -> Bool {

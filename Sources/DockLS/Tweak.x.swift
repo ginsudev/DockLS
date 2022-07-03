@@ -68,7 +68,8 @@ class CSQuickActionsView_Hook: ClassHook<CSQuickActionsView> {
     typealias Group = tweak
 
     func _insetY() -> CGFloat {
-        return DLSManager.sharedInstance.dockHeight + (localSettings.inset * 2)
+        let AndroBarHeight = (GSUtilities.sharedInstance().isAndroBarInstalled() && UIScreen.main.bounds.height > UIScreen.main.bounds.width) ? GSUtilities.sharedInstance().androBarHeight : 0.0
+        return DLSManager.sharedInstance.dockHeight + (localSettings.inset * 2) + AndroBarHeight
     }
 }
 
